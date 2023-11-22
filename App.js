@@ -1,7 +1,7 @@
 import RootNavigation from './Navigation/index'
 
-function App() {
 
+function App() {
   return (
     <>
     <RootNavigation />

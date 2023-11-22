@@ -5,21 +5,25 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "../screen/LoginScreen";
 import SignupScreen from "../screen/SignupScreen";
 import HomeScreen from "../screen/HomeScreen";
+import { Provider } from "react-redux";
+import { store } from "../Redux/store";
 const Stack = createNativeStackNavigator();
 const AuthStack = () => {
-  console.log("user not authenicated");
+ 
 
   return (
     <>
       <NavigationContainer>
+      <Provider store={store}>
         <Stack.Navigator
-          initialRouteName="Login"
+          initialRouteName="Home"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Signup" component={SignupScreen} />
           <Stack.Screen name="Home" component={HomeScreen} />
         </Stack.Navigator>
+        </Provider>
       </NavigationContainer>
     </>
   );

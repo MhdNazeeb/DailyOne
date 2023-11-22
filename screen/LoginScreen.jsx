@@ -6,8 +6,9 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import Animated, {
   FadeIn,
@@ -21,19 +22,27 @@ import { Formik } from "formik";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Auth } from "../config/authentication";
 import { loginSchema } from "../validation/login";
+import 'expo-dev-client';
+
 
 const LoginScreen = () => {
+  const [loader, setLoader] = useState(false);
+  const [error, setError] = useState(false);
   const navigation = useNavigation();
+
   async function loginUser(values) {
-    console.log(values);
+    setLoader(true);
     await signInWithEmailAndPassword(Auth, values.email, values.password)
       .then((res) => {
-        console.log(res);
-        navigation.replace('Home');
+        setLoader(false);
+        navigation.replace("Home");
       })
       .catch((error) => {
-        alert("user not found");
-        console.log(error.message);
+        setError(true);
+        setTimeout(() => {
+          setError(false);
+          setLoader(false);
+        }, 2000);
       });
   }
   return (
@@ -74,7 +83,7 @@ const LoginScreen = () => {
             validationSchema={loginSchema}
             onSubmit={(values) => loginUser(values)}
           >
-            {({ handleChange, handleBlur, handleSubmit, values,errors }) => (
+            {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
               <View className="flex items-center mx-4 space-y-4">
                 <Animated.View
                   entering={FadeInDown.duration(1000).springify().damping(3)}
@@ -110,7 +119,7 @@ const LoginScreen = () => {
                     onBlur={handleBlur("password")}
                     value={values.password}
                   />
-                   {errors.password && (
+                  {errors.password && (
                     <Text style={{ fontSize: 10, color: "#FF0000" }}>
                       {errors.password}
                     </Text>
@@ -127,9 +136,15 @@ const LoginScreen = () => {
                     onPress={handleSubmit}
                     className="w-full bg-sky-400 p-3 rounded-2xl mb-3"
                   >
-                    <Text className="text-center font-bold text-white">
-                      LOGIN
-                    </Text>
+                    {loader ? (
+                      <View className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-opacity-25 backdrop-filter backdrop-blur z-50">
+                        <ActivityIndicator size="small" color="#ffffff" />
+                      </View>
+                    ) : (
+                      <Text className="text-center font-bold text-white">
+                        LOGIN
+                      </Text>
+                    )}
                   </TouchableOpacity>
                 </Animated.View>
                 <Animated.View
@@ -149,6 +164,18 @@ const LoginScreen = () => {
           </Formik>
         </View>
       </ScrollView>
+      {error && (
+        <Animated.View
+          entering={FadeIn.delay(100).duration(1000).springify().damping(3)}
+          className="items-center pb-4"
+        >
+          <View className="w-80 h-9 bg-red-600 rounded-2xl justify-center">
+            <Text className="text-white text-center">
+              email or password incorrect
+            </Text>
+          </View>
+        </Animated.View>
+      )}
     </SafeAreaView>
   );
 };

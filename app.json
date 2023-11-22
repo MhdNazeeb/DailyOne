@@ -1,6 +1,15 @@
 {
   "expo": {
     "name": "DailyFresh",
-    "slug": "DailyFresh"
+    "slug": "DailyFresh",
+    "extra": {
+      "eas": {
+        "projectId": "1e5a248b-d2b8-4cd5-9ac6-a9bd84adb002"
+      }
+    },
+    "android": {
+      "package": "com.nasi777.DailyFresh",
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
+    }
   }
 }

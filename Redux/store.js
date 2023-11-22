@@ -4,10 +4,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { persistReducer } from "redux-persist";
 import { combineReducers } from "@reduxjs/toolkit";
 import userReducer from "./Userslice";
+import CartReducer from "./CartSlice";
+import ProductReducer from "./ProductSlice";
 
 
 const rootReducer = combineReducers({
   user: userReducer,
+  cart:CartReducer,
+  product:ProductReducer
   
 });
 

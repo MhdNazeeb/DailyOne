@@ -14,7 +14,6 @@ let persistor = persistStore(store);
 const Stack = createNativeStackNavigator();
 
 export default function UserStack() {
-    console.log("user authenicated");
   return (
     <NavigationContainer>
       <Provider store={store}>
@@ -23,7 +22,6 @@ export default function UserStack() {
             initialRouteName="Home"
             screenOptions={{ headerShown: false }}
           >
-            
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
           </Stack.Navigator>
