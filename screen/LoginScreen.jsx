@@ -35,7 +35,7 @@ const LoginScreen = () => {
     await signInWithEmailAndPassword(Auth, values.email, values.password)
       .then((res) => {
         setLoader(false);
-        navigation.replace("Home");
+        navigation.replace("Tab");
       })
       .catch((error) => {
         setError(true);

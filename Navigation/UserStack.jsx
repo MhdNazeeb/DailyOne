@@ -9,6 +9,9 @@ import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
 import { store } from "../Redux/store";
 import { persistStore } from "redux-persist";
+import TabNavigator from "./TabNavigator";
+
+
 let persistor = persistStore(store);
 
 const Stack = createNativeStackNavigator();
@@ -22,7 +25,8 @@ export default function UserStack() {
             initialRouteName="Home"
             screenOptions={{ headerShown: false }}
           >
-            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Home" component={TabNavigator} />
+            <Stack.Screen name="Tab" component={TabNavigator} />
             <Stack.Screen name="Login" component={LoginScreen} />
           </Stack.Navigator>
         </PersistGate>

@@ -6,8 +6,9 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Pressable } from "react-native";
+import { showMessage } from "react-native-flash-message";
 import { useSelector } from "react-redux";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../config/authentication";
@@ -16,28 +17,51 @@ import { getProducts, incrementQty } from "../Redux/ProductSlice";
 import ContentLoader, { Rect, Circle } from "react-content-loader/native";
 import { addToCart } from "../Redux/CartSlice";
 
-export default function Products({ loading, SetLoding }) {
+export default function Products({ loading, SetLoding, SetCart, cart }) {
   const [item, setItem] = useState([]);
   const product = useSelector((state) => state.product.product);
   const dispatch = useDispatch();
+
   useEffect(() => {
-    if (product.length > 0) return;
-    async function fetchProduct() {
-      const colRef = collection(db, "Products");
-      const docsSnap = await getDocs(colRef);
-      docsSnap.forEach((doc) => {
-        item?.push(doc.data());
-      });
-      item?.map((srevice) => dispatch(getProducts(srevice)));
-      SetLoding(false);
+    if (product.length > 0) {
+      SetLoding(false)
+      return;
+    } else {
+      async function fetchProduct() {
+        const colRef = collection(db, "Products");
+        const docsSnap = await getDocs(colRef);
+        docsSnap.forEach((doc) => {
+          item?.push(doc.data());
+        });
+        item?.map((srevice) => dispatch(getProducts(srevice)));
+        SetLoding(false);
+      }
+      fetchProduct();
     }
-    fetchProduct();
   }, []);
+
   function addCart(item) {
-    console.log('reach addcart',item);
     dispatch(addToCart(item));
-    dispatch(incrementQty(item))
+    dispatch(incrementQty(item));
+    SetCart(true);
   }
+  (function () {
+    if (cart)
+      showMessage({
+        message: "🛒 Item added to your cart",
+        type: "default",
+        backgroundColor: "green", // Custom background color
+        color: "white", // Custom text color
+        duration: 3000, // Custom duration
+        style: {
+          paddingVertical: 15,
+          paddingHorizontal: 10,
+          borderRadius: 5,
+          marginTop: 40,
+          fontWeight: "bold",
+        }, // Custom container style
+      });
+  })();
   return (
     <View className="p-3">
       {!loading ? (
@@ -53,7 +77,7 @@ export default function Products({ loading, SetLoding }) {
                 <Text className="text-center font-medium">${item.price}</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={()=>addCart(item)}
+                onPress={() => addCart(item)}
                 className="w-20 border-2  border-sky-300 mt-3 rounded-lg"
               >
                 <Text className="text-center">ADD</Text>
