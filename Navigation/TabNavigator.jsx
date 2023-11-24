@@ -5,7 +5,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 import HomeScreen from "../screen/HomeScreen";
 import CartScreen from "../screen/CartScreen";
-import Simple from "../screen/Simple";
+import ProfileScreen from "../screen/ProfileScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -38,9 +38,9 @@ export default function TabNavigator() {
       />
       <Tab.Screen
         name="Simle"
-        component={Simple}
+        component={ProfileScreen}
         options={{
-          tabBarLabel: "PROFILE",
+          tabBarLabel: "Profile",
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="account-circle" size={24} color={color} />
           ),

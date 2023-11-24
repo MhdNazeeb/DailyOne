@@ -19,7 +19,7 @@ import Services from "../components/Services";
 import Products from "../components/Products";
 import FlashMessage from "react-native-flash-message";
 
-const   HomeScreen = () => {
+const HomeScreen = () => {
   const [loading, SetLoding] = useState(true);
   const [displayCurrentAddress, setCurrentAddress] = useState("location");
   const [locationServiceEnabled, setLocationServiceEnabled] = useState(false);

@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  useWindowDimensions,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { Pressable } from "react-native";
@@ -14,17 +15,18 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../config/authentication";
 import { useDispatch } from "react-redux";
 import { getProducts, incrementQty } from "../Redux/ProductSlice";
-import ContentLoader, { Rect, Circle } from "react-content-loader/native";
+import ContentLoader, { Rect } from "react-content-loader/native";
 import { addToCart } from "../Redux/CartSlice";
 
 export default function Products({ loading, SetLoding, SetCart, cart }) {
   const [item, setItem] = useState([]);
   const product = useSelector((state) => state.product.product);
   const dispatch = useDispatch();
+  const width = useWindowDimensions().width;
 
   useEffect(() => {
     if (product.length > 0) {
-      SetLoding(false)
+      SetLoding(false);
       return;
     } else {
       async function fetchProduct() {
@@ -44,8 +46,9 @@ export default function Products({ loading, SetLoding, SetCart, cart }) {
     dispatch(addToCart(item));
     dispatch(incrementQty(item));
     SetCart(true);
-  }
+  } 
   (function () {
+    console.log(cart,'hhh');
     if (cart)
       showMessage({
         message: "🛒 Item added to your cart",
@@ -61,13 +64,20 @@ export default function Products({ loading, SetLoding, SetCart, cart }) {
           fontWeight: "bold",
         }, // Custom container style
       });
+    SetCart(false);
   })();
   return (
-    <View className="p-3">
+    <View className="p-3 flex ">
       {!loading ? (
-        <View className="flex-row m-2 max-w-max flex-wrap gap-[2%]">
+        <View className="flex-row max-w-max flex-wrap  gap-[2%]">
           {product?.map((item) => (
-            <Pressable className="w-[31%] p-5 rounded-lg bg-white">
+            <Pressable
+              className={
+                width > 380
+                  ? "w-[31%] items-center p-5 rounded-lg bg-white"
+                  : "w-40 items-center p-5 rounded-lg bg-white"
+              }
+            >
               <Image
                 style={{ width: 70, height: 70 }}
                 source={{ uri: item?.image }}

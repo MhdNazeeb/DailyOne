@@ -5,9 +5,11 @@ import {
   TouchableOpacity,
   ScrollView,
   Pressable,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
+
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { decrementQuantity, incrementQuantity } from "../Redux/CartSlice";
@@ -15,7 +17,8 @@ import { decrementQuantity, incrementQuantity } from "../Redux/CartSlice";
 const CartProduct = () => {
   const dispatch = useDispatch();
   const product = useSelector((state) => state?.cart?.cart);
-  console.log(product, "hhh");
+  const navigate = useNavigation()
+
   let total = product?.reduce((acc, curr) => {
     return (acc += +curr?.quantity * curr?.price);
   }, 0);
@@ -23,7 +26,18 @@ const CartProduct = () => {
     if (action === "increment") {
       dispatch(incrementQuantity(item));
     } else {
-      dispatch(decrementQuantity(item));
+      if (item.quantity === 1) {
+        Alert.alert("Delete Product", "Do you Want To Remove This Product", [
+          {
+            text: "Cancel",
+            onPress: () => console.log('this is') ,
+            style: "cancel",
+          },
+          { text: "OK", onPress: () => dispatch(decrementQuantity(item)) },
+        ]);
+      } else {
+        dispatch(decrementQuantity(item));
+      }
     }
   }
   return (
@@ -87,11 +101,13 @@ const CartProduct = () => {
           <Text className="text-white font-bold text-lg">
             {product.length} item | ${total}
           </Text>
-          <Text className="text-white mt-1">Extra Changes May Applay</Text>
+          <Text className="text-white mt-1 w-max">
+            Extra Changes May Applay
+          </Text>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>navigate.push('Pickup')}>
           <Text className="text-white font-bold text-lg mt-2">
-            Proceed to Checkout...
+            Proceed to Checkout..
           </Text>
         </TouchableOpacity>
       </Pressable>
