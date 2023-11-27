@@ -1,14 +1,16 @@
 import { View, Text, Modal, TextInput, Button } from "react-native";
 import React, { useEffect, useState } from "react";
-import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../config/authentication";
 import useAuth from "../hooks/useAuth";
 import { Formik } from "formik";
 
 const AddressEdit = ({ editAddress, setEditAddress }) => {
   const [data, setData] = useState([]);
+  const [name, setName] = useState("");
+  const [editaddress, setAddress] = useState("");
+  const [pincode, setPincode] = useState("");
   const { user } = useAuth();
-  let address;
   useEffect(() => {
     (async function () {
       const colRef = collection(db, "Address");
@@ -20,26 +22,12 @@ const AddressEdit = ({ editAddress, setEditAddress }) => {
       setData(newData);
     })();
   }, []);
+  let address;
   (function () {
     address = data.find((val) => {
       return user.uid === val.user;
     });
   })();
-  async function AddressUpdate(values) {
-    console.log(address,'jj');
-    const docRef = doc(db, "Address", address?.user);
-    console.log(docRef,'this ref');
-    await updateDoc(docRef, {
-      name: values?.name,
-      address: values?.address,
-      pincode: values?.pincode,
-    }).then((res)=>{
-      console.log(res,'this is  sucess');
-    }).catch((error)=>{
-      console.log(error,'this is error');
-    })
-  }
-
   return (
     <>
       <Modal
@@ -50,20 +38,20 @@ const AddressEdit = ({ editAddress, setEditAddress }) => {
           setEditAddress(!editAddress);
         }}
       >
-        {console.log(address, "this is address")}
         <Formik
           initialValues={{
-            name: address?.name,
+            name:  address?.name,
             address: address?.address,
             pincode: address?.pincode,
           }}
-          onSubmit={(values) => AddressUpdate(values)}
-          enableReinitialize={true}
+          onSubmit={(values) => console.log(values,'ddd')}
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+         
             <View className="w-full flex-1 items-center  justify-center">
               <View className="px-8 w-full max-w-sm">
                 <Text className="text-2xl font-bold mb-6 text-gray-50">
+                  {console.log(values,'fffffffffffffffffffffff')}
                   EDIT ADDRRESS
                 </Text>
 
