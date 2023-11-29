@@ -1,43 +1,78 @@
-import { View, Text, Modal, TextInput, Button } from "react-native";
+import {
+  View,
+  Text,
+  Modal,
+  TextInput,
+  Button,
+  KeyboardAvoidingView,
+  ImageBackground,
+  Image,
+} from "react-native";
 import React, { useEffect, useState } from "react";
-import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../config/authentication";
 import useAuth from "../hooks/useAuth";
 import { Formik } from "formik";
 
-const AddressEdit = ({ editAddress, setEditAddress }) => {
+const AddressEdit = ({ editAddress, setEditAddress, setReload }) => {
   const [data, setData] = useState([]);
   const { user } = useAuth();
+  const [userId, setUserId] = useState(null);
   let address;
   useEffect(() => {
     (async function () {
       const colRef = collection(db, "Address");
+      console.log(colRef, "this collection what i want");
       const docsSnap = await getDocs(colRef);
       const newData = [];
+      let currentUserDocId = null;
       docsSnap.forEach((doc) => {
         newData.push(doc.data());
+        if (user.uid === doc.data().user) {
+          currentUserDocId = doc.id;
+        }
       });
       setData(newData);
+      setUserId(currentUserDocId);
     })();
-  }, []);
+  }, [user?.uid]);
   (function () {
     address = data.find((val) => {
       return user.uid === val.user;
     });
   })();
   async function AddressUpdate(values) {
-    console.log(address,'jj');
-    const docRef = doc(db, "Address", address?.user);
-    console.log(docRef,'this ref');
-    await updateDoc(docRef, {
-      name: values?.name,
-      address: values?.address,
-      pincode: values?.pincode,
-    }).then((res)=>{
-      console.log(res,'this is  sucess');
-    }).catch((error)=>{
-      console.log(error,'this is error');
-    })
+    try {
+      if (!user) {
+        console.log("Address is null or undefined");
+        return;
+      }
+
+      const docRef = doc(db, "Address", userId);
+      console.log(docRef, "this ref");
+
+      const docSnapshot = await getDoc(docRef);
+      if (docSnapshot.exists()) {
+        const res = await updateDoc(docRef, {
+          name: values?.name,
+          address: values?.address,
+          pincode: values?.pincode,
+        });
+        setReload((state) => !state);
+        setEditAddress(false);
+        console.log(res, "this is success");
+      } else {
+        console.log("Document does not exist");
+      }
+    } catch (error) {
+      console.error(error, "this is error");
+    }
   }
 
   return (
@@ -61,17 +96,13 @@ const AddressEdit = ({ editAddress, setEditAddress }) => {
           enableReinitialize={true}
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
-            <View className="w-full flex-1 items-center  justify-center">
-              <View className="px-8 w-full max-w-sm">
-                <Text className="text-2xl font-bold mb-6 text-gray-50">
-                  EDIT ADDRRESS
-                </Text>
-
-                <View className="flex flex-col gap-4  w-80">
+            <View className=" w-screen h-full mt-40 flex items-center justify-center pb-20">
+              <View className=" w-10/12 h-80 border p-2 shadow">
+                <KeyboardAvoidingView className="flex flex-col gap-4  w-80">
                   <TextInput
                     placeholder="Enter you name"
                     autoCapitalize="none"
-                    className="border rounded-sm pl-2"
+                    className="bg-white rounded-sm pl-2"
                     onChangeText={handleChange("name")}
                     onBlur={handleBlur("name")}
                     value={values.name}
@@ -81,7 +112,7 @@ const AddressEdit = ({ editAddress, setEditAddress }) => {
                     placeholder="enter your address"
                     autoCapitalize="none"
                     keyboardType="email-address"
-                    className="border rounded-sm pl-2"
+                    className="bg-white rounded-sm pl-2"
                     onChangeText={handleChange("address")}
                     onBlur={handleBlur("address")}
                     value={values.address}
@@ -89,13 +120,12 @@ const AddressEdit = ({ editAddress, setEditAddress }) => {
 
                   <TextInput
                     placeholder="enter your pincode"
-                    className="border rounded-sm pl-2"
+                    className="bg-white rounded-sm pl-2"
                     onChangeText={handleChange("pincode")}
                     onBlur={handleBlur("pincode")}
                     value={values.pincode}
                   />
-                </View>
-
+                </KeyboardAvoidingView>
                 <View className="flex-row items-center gap-2 pl-1 my-8">
                   <View>
                     <Button

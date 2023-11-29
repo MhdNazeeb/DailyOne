@@ -6,10 +6,12 @@ import LoginScreen from "../screen/LoginScreen";
 import SignupScreen from "../screen/SignupScreen";
 import TabNavigator from "./TabNavigator";
 import CheckoutScreen from "../screen/CheckoutScreen";
+import { SafeAreaView } from "react-native-safe-area-context";
 const Stack = createNativeStackNavigator();
 const AuthStack = () => {
   return (
     <>
+   
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="Login"
@@ -20,6 +22,7 @@ const AuthStack = () => {
           <Stack.Screen name="Home" component={TabNavigator} />
         </Stack.Navigator>
       </NavigationContainer>
+      
     </>
   );
 };

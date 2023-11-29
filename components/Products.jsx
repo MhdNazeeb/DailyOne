@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { getProducts, incrementQty } from "../Redux/ProductSlice";
 import ContentLoader, { Rect } from "react-content-loader/native";
 import { addToCart } from "../Redux/CartSlice";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Products({ loading, SetLoding, SetCart, cart }) {
   const [item, setItem] = useState([]);
@@ -67,6 +68,7 @@ export default function Products({ loading, SetLoding, SetCart, cart }) {
     SetCart(false);
   })();
   return (
+    <SafeAreaView>
     <View className="p-3 flex ">
       {!loading ? (
         <View className="flex-row max-w-max flex-wrap  gap-[2%]">
@@ -115,5 +117,6 @@ export default function Products({ loading, SetLoding, SetCart, cart }) {
         </ContentLoader>
       )}
     </View>
+    </SafeAreaView>
   );
 }

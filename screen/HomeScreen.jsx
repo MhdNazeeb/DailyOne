@@ -5,13 +5,18 @@ import {
   Pressable,
   TextInput,
   ScrollView,
+  StatusBar,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { confirmPasswordReset, signOut } from "firebase/auth";
 import { Auth } from "../config/authentication";
 import * as Location from "expo-location";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaContext,
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import ImageCarousel from "../components/ImageCarousel";
@@ -82,7 +87,9 @@ const HomeScreen = () => {
   //   navigation.replace("Login");
   // }
   return (
-    <SafeAreaView style={{ backgroundColor: "#FOFOFO", flex: 1 }}>
+    <SafeAreaView
+      style={{ flex: 1}}
+    >
       <View className="p-3 pt-8 top-0 flex-row fixed  right-0 ">
         <MaterialIcons name="location-on" size={30} color="#E32636" />
 

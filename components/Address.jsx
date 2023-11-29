@@ -6,6 +6,7 @@ import {
   Pressable,
   Modal,
   ToastAndroid,
+  KeyboardAvoidingView,
 } from "react-native";
 import Animated, {
   FadeIn,
@@ -22,6 +23,7 @@ import { db } from "../config/authentication";
 import useAuth from "../hooks/useAuth";
 import AddressEdit from "./AddressEdit";
 import { useWindowDimensions } from "react-native";
+import Calendar from "./Calander";
 
 const Address = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -33,8 +35,13 @@ const Address = () => {
   const [error, setError] = useState(false);
   const [editAddress, setEditAddress] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [reload, setReload] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+
   const width = useWindowDimensions().width;
   let getAddress;
+  let userid;
+  let exist = false;
 
   async function confirm(action) {
     if (action === "confirm") {
@@ -43,10 +50,9 @@ const Address = () => {
       docsSnap.forEach((doc) => {
         data?.push(doc.data());
       });
-      let userid = data.find((val) => {
+      userid = data.find((val) => {
         return val.user === user.uid;
       });
-      console.log(userid, "jjj");
       if (userid == undefined) {
         const myCollection = collection(db, "Address");
         const newDocRef = await addDoc(myCollection, {
@@ -55,11 +61,13 @@ const Address = () => {
           pincode: pincode,
           user: user.uid,
         });
+
         setSuccess(true);
         setTimeout(() => {
           setSuccess(false);
         }, 2000);
       } else {
+        console.log("errorrr");
         setError(true);
         setTimeout(() => {
           setError(false);
@@ -79,24 +87,42 @@ const Address = () => {
       });
       setData(newData);
     })();
-  }, []);
+  }, [reload]);
   (function () {
-     getAddress = data.find((val) => {
+    getAddress = data.find((val) => {
       return user.uid === val.user;
     });
+
+    if (getAddress !== undefined) {
+      if (Object?.keys(getAddress).length > 0) {
+        exist = true;
+      }
+    }
   })();
 
   return (
     <SafeAreaView>
       <View className="font-bold p-3">
-        <Text>-pickup</Text>
+        <Text className="font-semibold">-pickup</Text>
       </View>
       <View className="bg-white m-2 h-24 p-2 flex-row justify-between">
-        <View className="w-40 h-fit p-2">
-          <Text>Name:{getAddress?.name}</Text>
-          <Text>Name:{getAddress?.address}</Text>
-          <Text>Name:{getAddress?.pincode}</Text>
-        </View>
+        {exist ? (
+          <View className="w-40 h-fit p-2">
+            <View className="w-60">
+              <Text className="font-medium">Name:{getAddress?.name}</Text>
+            </View>
+            <View className="w-60">
+              <Text className="font-medium">Name:{getAddress?.address}</Text>
+            </View>
+            <View className="w-60">
+              <Text className="font-medium">Name:{getAddress?.pincode}</Text>
+            </View>
+          </View>
+        ) : (
+          <View className="w-40 h-fit p-2">
+            <Text className="font-medium">Add Your Address</Text>
+          </View>
+        )}
         <View>
           <TouchableOpacity
             className="bg-blue-400  w-20 h-7 rounded-lg"
@@ -120,23 +146,13 @@ const Address = () => {
           setModalVisible(!modalVisible);
         }}
       >
-        <View className="w-full flex-1 items-center  justify-center">
-          <View className="px-8 w-full max-w-sm">
-            <Text
-              className={
-                width > 380
-                  ? "text-5xl font-bold mb-6 text-gray-50"
-                  : "text-3xl font-bold mb-6 text-gray-50"
-              }
-            >
-              ADDRRESS
-            </Text>
-
-            <View className="flex flex-col gap-4 w-80">
+        <View className=" w-screen h-full mt-40 flex items-center justify-center pb-20">
+          <View className=" w-10/12 h-80 border p-2 shadow">
+            <KeyboardAvoidingView className="flex flex-col gap-4  w-80">
               <TextInput
                 placeholder="Enter you name"
                 autoCapitalize="none"
-                className="border rounded-sm pl-2"
+                className="bg-white rounded-sm pl-2"
                 value={name}
                 onChangeText={setName}
               />
@@ -145,19 +161,18 @@ const Address = () => {
                 placeholder="enter your address"
                 autoCapitalize="none"
                 keyboardType="email-address"
-                className="border rounded-sm pl-2"
+                className="bg-white rounded-sm pl-2"
                 value={address}
                 onChangeText={setAddress}
               />
 
               <TextInput
                 placeholder="enter your pincode"
-                className="border rounded-sm pl-2"
+                className="bg-white rounded-sm pl-2"
                 value={pincode}
                 onChangeText={setPincode}
               />
-            </View>
-
+            </KeyboardAvoidingView>
             <View className="flex-row items-center gap-2 pl-1 my-8">
               <View>
                 <Button
@@ -175,6 +190,7 @@ const Address = () => {
                 />
               </View>
             </View>
+
             {error && (
               <Animated.View
                 entering={BounceIn.delay(100)
@@ -183,7 +199,7 @@ const Address = () => {
                   .damping(3)}
                 className="items-center pb-4"
               >
-                <View className="w-80 h-9 bg-blue-400 rounded-2xl justify-center">
+                <View className="w-72 h-9 bg-blue-400 rounded-2xl justify-center">
                   <Text className="text-white text-center">Alleady Added</Text>
                 </View>
               </Animated.View>
@@ -196,7 +212,7 @@ const Address = () => {
                   .damping(3)}
                 className="items-center pb-4"
               >
-                <View className="w-80 h-9 bg-blue-400 rounded-2xl justify-center">
+                <View className="w-72 h-9 bg-blue-400 rounded-2xl justify-center">
                   <Text className="text-white text-center">Address added</Text>
                 </View>
               </Animated.View>
@@ -208,8 +224,11 @@ const Address = () => {
         <AddressEdit
           editAddress={editAddress}
           setEditAddress={setEditAddress}
+          setReload={setReload}
         />
       )}
+      <Text className="m-2">Pick Up Date</Text>
+      <Calendar onSelectDate={setSelectedDate} selected={selectedDate} />
     </SafeAreaView>
   );
 };
