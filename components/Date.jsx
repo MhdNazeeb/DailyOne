@@ -44,11 +44,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: '#ddd',
     padding: 10,
-    marginVertical: 10,
+    marginVertical: 9,
     alignItems: 'center',
     height: 70,
     width: 60,
     marginHorizontal: 5,
+    borderWidth: 2
   },
   big: {
     fontWeight: 'bold',

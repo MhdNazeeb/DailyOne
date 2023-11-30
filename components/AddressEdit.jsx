@@ -97,7 +97,7 @@ const AddressEdit = ({ editAddress, setEditAddress, setReload }) => {
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
             <View className=" w-screen h-full mt-40 flex items-center justify-center pb-20">
-              <View className=" w-10/12 h-80 border p-2 shadow">
+              <View className="w-screen h-80  bg-white p-2 shadow">
                 <KeyboardAvoidingView className="flex flex-col gap-4  w-80">
                   <TextInput
                     placeholder="Enter you name"

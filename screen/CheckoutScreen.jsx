@@ -7,7 +7,8 @@ const CheckoutScreen = () => {
   return (
     <SafeAreaView>
       <StatusBar />
-     <Address />
+      <Address />
+    
   
     </SafeAreaView>
   )

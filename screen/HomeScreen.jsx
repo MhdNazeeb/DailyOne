@@ -13,7 +13,6 @@ import { confirmPasswordReset, signOut } from "firebase/auth";
 import { Auth } from "../config/authentication";
 import * as Location from "expo-location";
 import {
-  SafeAreaContext,
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
@@ -53,7 +52,6 @@ const HomeScreen = () => {
     }
   };
   const getCurrentLocation = async () => {
-    console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkjjjjjjjhhhhhhhhhhhh");
     const { status } = await Location.requestForegroundPermissionsAsync();
     console.log(status, "status");
     if (status !== "granted") {

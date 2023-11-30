@@ -24,6 +24,10 @@ import useAuth from "../hooks/useAuth";
 import AddressEdit from "./AddressEdit";
 import { useWindowDimensions } from "react-native";
 import Calendar from "./Calander";
+import SelectTime from "./SelectTime";
+import { useDispatch } from "react-redux";
+import { PickUpTimeDate } from "../Redux/PickUp";
+import { useSelector } from "react-redux";
 
 const Address = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -37,6 +41,12 @@ const Address = () => {
   const [success, setSuccess] = useState(false);
   const [reload, setReload] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [selectTime, setSelectedTime] = useState("");
+  const [selectDeliveryTime, setSelectDeliveryTime] = useState("");
+  const [fromError, setFormError] = useState(false);
+  const [reDate, setReDate] = useState({});
+  const dispatch = useDispatch();
+  const selectedPickUp = useSelector((state) => state.datePickUp);
 
   const width = useWindowDimensions().width;
   let getAddress;
@@ -100,6 +110,22 @@ const Address = () => {
     }
   })();
 
+  function checkOut() {
+    if (selectDeliveryTime === "" || selectTime === "" || selectedDate === "") {
+      setFormError(true);
+      setTimeout(() => {
+        setFormError(false);
+      }, 2000);
+      return;
+    }
+    setReDate({
+      selectDeliveryTime: selectDeliveryTime,
+      selectTime: selectTime,
+      selectedDate: selectedDate,
+    });
+
+    dispatch(PickUpTimeDate(reDate));
+  }
   return (
     <SafeAreaView>
       <View className="font-bold p-3">
@@ -139,7 +165,7 @@ const Address = () => {
         </View>
       </View>
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
@@ -147,7 +173,7 @@ const Address = () => {
         }}
       >
         <View className=" w-screen h-full mt-40 flex items-center justify-center pb-20">
-          <View className=" w-10/12 h-80 border p-2 shadow">
+          <View className=" w-screen h-80  bg-white p-2 shadow">
             <KeyboardAvoidingView className="flex flex-col gap-4  w-80">
               <TextInput
                 placeholder="Enter you name"
@@ -227,8 +253,35 @@ const Address = () => {
           setReload={setReload}
         />
       )}
-      <Text className="m-2">Pick Up Date</Text>
+      <Text className="mx-4 font-medium">Pick Up Date</Text>
       <Calendar onSelectDate={setSelectedDate} selected={selectedDate} />
+      <SelectTime
+        setSelectDeliveryTime={setSelectDeliveryTime}
+        selectDeliveryTime={selectDeliveryTime}
+        setSelectedTime={setSelectedTime}
+        selectTime={selectTime}
+      />
+      {fromError ? (
+        <Animated.View
+          entering={FadeIn.delay(100).duration(1000).springify().damping(3)}
+          className="items-center pt-8"
+        >
+          <View className="w-80 h-9 bg-red-600 rounded-2xl justify-center">
+            <Text className="text-white text-center">
+              email or password incorrect
+            </Text>
+          </View>
+        </Animated.View>
+      ) : (
+        <Pressable className="bg-sky-300 h-20 rounded-t-xl my-44 flex-row items-center justify-center ">
+         
+          <TouchableOpacity onPress={checkOut}>
+            <Text className="text-white font-bold text-lg mt-2">
+              Proceed to Checkout..
+            </Text>
+          </TouchableOpacity>
+        </Pressable>
+      )}
     </SafeAreaView>
   );
 };

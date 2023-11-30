@@ -6,12 +6,14 @@ import { combineReducers } from "@reduxjs/toolkit";
 import userReducer from "./Userslice";
 import CartReducer from "./CartSlice";
 import ProductReducer from "./ProductSlice";
+import datePickUpReducer from './PickUp'
 
 
 const rootReducer = combineReducers({
   user: userReducer,
   cart:CartReducer,
-  product:ProductReducer
+  product:ProductReducer,
+  datePickUp:datePickUpReducer
   
 });
 
