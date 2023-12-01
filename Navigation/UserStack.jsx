@@ -10,8 +10,7 @@ import { persistStore } from "redux-persist";
 import TabNavigator from "./TabNavigator";
 import CheckoutScreen from "../screen/CheckoutScreen";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-
+import BillingScreen from "../screen/BillingScreen";
 
 let persistor = persistStore(store);
 
@@ -19,7 +18,6 @@ const Stack = createNativeStackNavigator();
 
 export default function UserStack() {
   return (
-    
     <NavigationContainer>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
@@ -30,11 +28,11 @@ export default function UserStack() {
             <Stack.Screen name="Home" component={TabNavigator} />
             <Stack.Screen name="Tab" component={TabNavigator} />
             <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name='Pickup' component={CheckoutScreen} />
+            <Stack.Screen name="Pickup" component={CheckoutScreen} />
+            <Stack.Screen name="Billig" component={BillingScreen} />
           </Stack.Navigator>
         </PersistGate>
       </Provider>
     </NavigationContainer>
-   
   );
 }

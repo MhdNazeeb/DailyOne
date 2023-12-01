@@ -5,8 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "../screen/LoginScreen";
 import SignupScreen from "../screen/SignupScreen";
 import TabNavigator from "./TabNavigator";
-import CheckoutScreen from "../screen/CheckoutScreen";
-import { SafeAreaView } from "react-native-safe-area-context";
+
 const Stack = createNativeStackNavigator();
 const AuthStack = () => {
   return (
@@ -20,6 +19,7 @@ const AuthStack = () => {
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Signup" component={SignupScreen} />
           <Stack.Screen name="Home" component={TabNavigator} />
+          
         </Stack.Navigator>
       </NavigationContainer>
       

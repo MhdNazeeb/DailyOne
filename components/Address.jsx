@@ -28,6 +28,7 @@ import SelectTime from "./SelectTime";
 import { useDispatch } from "react-redux";
 import { PickUpTimeDate } from "../Redux/PickUp";
 import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 
 const Address = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -47,8 +48,10 @@ const Address = () => {
   const [reDate, setReDate] = useState({});
   const dispatch = useDispatch();
   const selectedPickUp = useSelector((state) => state.datePickUp);
+  const navigation = useNavigation();
 
   const width = useWindowDimensions().width;
+  const height = useWindowDimensions().height;
   let getAddress;
   let userid;
   let exist = false;
@@ -118,13 +121,14 @@ const Address = () => {
       }, 2000);
       return;
     }
-    setReDate({
-      selectDeliveryTime: selectDeliveryTime,
-      selectTime: selectTime,
-      selectedDate: selectedDate,
-    });
 
-    dispatch(PickUpTimeDate(reDate));
+    // setReDate({
+    //   selectDeliveryTime: selectDeliveryTime,
+    //   selectTime: selectTime,
+    //   selectedDate: selectedDate,
+    // });
+      dispatch(PickUpTimeDate({selectDeliveryTime,selectTime,selectedDate}));
+    navigation.push("Billig");
   }
   return (
     <SafeAreaView>
@@ -264,17 +268,22 @@ const Address = () => {
       {fromError ? (
         <Animated.View
           entering={FadeIn.delay(100).duration(1000).springify().damping(3)}
-          className="items-center pt-8"
+          className={height > 767 ? "items-center pt-8" : "items-center pt-5"}
         >
           <View className="w-80 h-9 bg-red-600 rounded-2xl justify-center">
             <Text className="text-white text-center">
-              email or password incorrect
+              Please Select Valid Details
             </Text>
           </View>
         </Animated.View>
       ) : (
-        <Pressable className="bg-sky-300 h-20 rounded-t-xl my-44 flex-row items-center justify-center ">
-         
+        <Pressable
+          className={
+            height > 767
+              ? "bg-sky-300 h-20 rounded-t-xl my-44 flex-row items-center justify-center "
+              : "bg-sky-300 h-20 rounded-t-xl my-32 flex-row items-center justify-center "
+          }
+        >
           <TouchableOpacity onPress={checkOut}>
             <Text className="text-white font-bold text-lg mt-2">
               Proceed to Checkout..

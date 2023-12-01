@@ -9,9 +9,10 @@ const PickUp = createSlice({
     },
     reducers: {
         PickUpTimeDate: (state, action) => {
-            state.PickUpDate = action.payload.selectDeliveryTime;
+            console.log(action,'jjj');
+            state.PickUpDate = action.payload.selectedDate;
             state.PickUpTime = action.payload.selectTime;
-            state.DeliveryTime = action.payload.selectedDate;
+            state.DeliveryTime = action.payload.selectDeliveryTime;
             
         },
         clearPickUp:(state, action) => {
