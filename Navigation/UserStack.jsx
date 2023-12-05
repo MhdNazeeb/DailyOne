@@ -9,9 +9,9 @@ import { store } from "../Redux/store";
 import { persistStore } from "redux-persist";
 import TabNavigator from "./TabNavigator";
 import CheckoutScreen from "../screen/CheckoutScreen";
-import { SafeAreaView } from "react-native-safe-area-context";
 import BillingScreen from "../screen/BillingScreen";
 import OrderScreen from "../screen/OrderScreen";
+
 
 let persistor = persistStore(store);
 

@@ -1,13 +1,14 @@
-import { SafeAreaView } from 'react-native-safe-area-context';
-import RootNavigation from './Navigation/index'
-
+import { SafeAreaView } from "react-native-safe-area-context";
+import RootNavigation from "./Navigation/index";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 function App() {
   return (
     <>
-
-    <RootNavigation />
-    
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        {/* content */}
+        <RootNavigation />
+      </GestureHandlerRootView>
     </>
   );
 }

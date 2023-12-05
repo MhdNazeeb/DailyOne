@@ -4,7 +4,7 @@ import Profile from '../components/Profile'
 
 const ProfileScreen = () => {
   return (
-    <SafeAreaView>
+    <SafeAreaView >
       <Profile />
     </SafeAreaView>
   )
