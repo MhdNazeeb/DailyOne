@@ -29,6 +29,7 @@ import { useDispatch } from "react-redux";
 import { PickUpTimeDate } from "../Redux/PickUp";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+import { MaterialIcons } from '@expo/vector-icons';
 
 const Address = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -41,7 +42,7 @@ const Address = () => {
   const [editAddress, setEditAddress] = useState(false);
   const [success, setSuccess] = useState(false);
   const [reload, setReload] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState("");
   const [selectTime, setSelectedTime] = useState("");
   const [selectDeliveryTime, setSelectDeliveryTime] = useState("");
   const [fromError, setFormError] = useState(false);
@@ -122,18 +123,13 @@ const Address = () => {
       return;
     }
 
-    // setReDate({
-    //   selectDeliveryTime: selectDeliveryTime,
-    //   selectTime: selectTime,
-    //   selectedDate: selectedDate,
-    // });
       dispatch(PickUpTimeDate({selectDeliveryTime,selectTime,selectedDate}));
-    navigation.push("Billig");
+    navigation.replace("Billing");
   }
   return (
     <SafeAreaView>
       <View className="font-bold p-3">
-        <Text className="font-semibold">-pickup</Text>
+      <MaterialIcons name="arrow-back-ios" size={26} color="black" onPress={()=>navigation.navigate("Cart")} />
       </View>
       <View className="bg-white m-2 h-24 p-2 flex-row justify-between">
         {exist ? (

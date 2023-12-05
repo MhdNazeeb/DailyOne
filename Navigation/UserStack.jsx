@@ -11,6 +11,7 @@ import TabNavigator from "./TabNavigator";
 import CheckoutScreen from "../screen/CheckoutScreen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BillingScreen from "../screen/BillingScreen";
+import OrderScreen from "../screen/OrderScreen";
 
 let persistor = persistStore(store);
 
@@ -29,7 +30,8 @@ export default function UserStack() {
             <Stack.Screen name="Tab" component={TabNavigator} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Pickup" component={CheckoutScreen} />
-            <Stack.Screen name="Billig" component={BillingScreen} />
+            <Stack.Screen name="Billing" component={BillingScreen} />
+            <Stack.Screen name="Order" component={OrderScreen} />
           </Stack.Navigator>
         </PersistGate>
       </Provider>

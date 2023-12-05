@@ -17,7 +17,7 @@ import { decrementQuantity, incrementQuantity } from "../Redux/CartSlice";
 const CartProduct = () => {
   const dispatch = useDispatch();
   const product = useSelector((state) => state?.cart?.cart);
-  const navigate = useNavigation()
+  const navigation = useNavigation();
 
   let total = product?.reduce((acc, curr) => {
     return (acc += +curr?.quantity * curr?.price);
@@ -30,7 +30,7 @@ const CartProduct = () => {
         Alert.alert("Delete Product", "Do you Want To Remove This Product", [
           {
             text: "Cancel",
-            onPress: () => console.log('this is') ,
+            onPress: () => console.log("this is"),
             style: "cancel",
           },
           { text: "OK", onPress: () => dispatch(decrementQuantity(item)) },
@@ -105,7 +105,7 @@ const CartProduct = () => {
             Extra Changes May Applay
           </Text>
         </View>
-        <TouchableOpacity onPress={()=>navigate.push('Pickup')}>
+        <TouchableOpacity onPress={() => navigation.navigate("Pickup")}>
           <Text className="text-white font-bold text-lg mt-2">
             Proceed to Checkout..
           </Text>
