@@ -11,6 +11,7 @@ import TabNavigator from "./TabNavigator";
 import CheckoutScreen from "../screen/CheckoutScreen";
 import BillingScreen from "../screen/BillingScreen";
 import OrderScreen from "../screen/OrderScreen";
+import OrdersScreen from "../screen/OrdersScreen";
 
 
 let persistor = persistStore(store);
@@ -32,6 +33,7 @@ export default function UserStack() {
             <Stack.Screen name="Pickup" component={CheckoutScreen} />
             <Stack.Screen name="Billing" component={BillingScreen} />
             <Stack.Screen name="Order" component={OrderScreen} />
+            <Stack.Screen name="Orders" component={OrdersScreen} />
           </Stack.Navigator>
         </PersistGate>
       </Provider>

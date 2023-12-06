@@ -1,5 +1,11 @@
 import { View, Text, Pressable } from "react-native";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ImageBackground } from "react-native";
@@ -7,15 +13,37 @@ import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import ProfileContent from "./ProfileContent";
+import useAuth from "../hooks/useAuth";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../config/authentication";
 
 const Profile = () => {
+  const [userData, setUserData] = useState([]);
   const navigation = useNavigation();
   const bottomSheetRef = useRef(null);
   const [open, setOpen] = useState(false);
+  const [reload,setReload] = useState(false)
+  const { user } = useAuth();
+  useEffect(() => {
+  
+    (async function () {
+      const myCollection = collection(db, "users");
+      const querySnapshot = await getDocs(myCollection);
+      const documents = [];
+      querySnapshot.forEach((doc) => {
+        documents.push({ id: doc.id, ...doc.data() });
+      });
+      newArr = documents.filter((val) => {
+        return val.id === user?.uid;
+      });
+      setUserData(newArr);
+    })();
+  }, [reload]);
 
   const handleOpenPress = () => {
     bottomSheetRef?.current?.expand();
     setOpen(true);
+    setReload(!reload)
   };
 
   // variables
@@ -56,7 +84,7 @@ const Profile = () => {
           </Pressable>
         </View>
 
-        {open &&(
+        {open && (
           <BottomSheet
             ref={bottomSheetRef}
             snapPoints={snapPoints}
@@ -65,10 +93,10 @@ const Profile = () => {
             backgroundStyle={{ borderRadius: 38 }}
           >
             <View>
-              <ProfileContent />
+              <ProfileContent userData={userData} />
             </View>
           </BottomSheet>
-        ) }
+        )}
       </View>
     </SafeAreaView>
   );

@@ -1,27 +1,26 @@
-import { View, Text } from "react-native";
-import React from "react";
+import { View, Text, Pressable } from "react-native";
+import React, { useEffect, useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-import useAuth from "../hooks/useAuth";
-import { collection, doc } from "firebase/firestore";
-import { db } from "../config/authentication";
+import { useNavigation } from "@react-navigation/native";
 
-const ProfileContent = () => {
-  const { user } = useAuth();
-  const myCollection = collection(db, "users");
-  
+
+const ProfileContent = ({userData}) => {
+  const navigation = useNavigation();
   return (
     <View>
       <View className="p-5">
-        <Text className="text-black font-medium">ProfileContent</Text>
+        <Text className="text-black font-medium">{userData[0]?.name}</Text>
         <View className="pt-3">
-          <Text>naseebn819@gmail.com</Text>
+          <Text>{userData[0]?.email}</Text>
         </View>
       </View>
-      <View className="flex-row justify-between pr-2 pt-11">
+      <Pressable className="flex-row justify-between pr-2 pt-11"
+      onPress={()=>navigation.navigate('Orders')}
+      >
         <View className="flex-row pl-4">
           <View>
             <Feather name="box" size={20} color="black" />
@@ -33,7 +32,7 @@ const ProfileContent = () => {
         <View className="pl-3">
           <MaterialIcons name="arrow-forward-ios" size={20} color="black" />
         </View>
-      </View>
+      </Pressable>
       <View className="flex-row justify-between pr-2 pt-11">
         <View className="flex-row pl-4">
           <View>
