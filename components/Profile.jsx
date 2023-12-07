@@ -21,8 +21,6 @@ const Profile = () => {
   const [userData, setUserData] = useState([]);
   const navigation = useNavigation();
   const bottomSheetRef = useRef(null);
-  const [open, setOpen] = useState(false);
-  const [reload,setReload] = useState(false)
   const { user } = useAuth();
   useEffect(() => {
   
@@ -36,18 +34,18 @@ const Profile = () => {
       newArr = documents.filter((val) => {
         return val.id === user?.uid;
       });
+      console.log(newArr);
       setUserData(newArr);
     })();
-  }, [reload]);
+  }, [user]);
 
   const handleOpenPress = () => {
     bottomSheetRef?.current?.expand();
-    setOpen(true);
-    setReload(!reload)
+
   };
 
   // variables
-  const snapPoints = useMemo(() => ["25%", "50%", "70%"], []);
+  const snapPoints = useMemo(() => ["70%"], []);
 
   // callbacks
   const handleSheetChanges = useCallback((index) => {
@@ -84,19 +82,18 @@ const Profile = () => {
           </Pressable>
         </View>
 
-        {open && (
+       
           <BottomSheet
             ref={bottomSheetRef}
             snapPoints={snapPoints}
             onChange={handleSheetChanges}
-            enablePanDownToClose
             backgroundStyle={{ borderRadius: 38 }}
           >
             <View>
               <ProfileContent userData={userData} />
             </View>
           </BottomSheet>
-        )}
+       
       </View>
     </SafeAreaView>
   );

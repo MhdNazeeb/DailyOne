@@ -1,5 +1,4 @@
 import * as React from "react";
-import { View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "../screen/LoginScreen";
@@ -12,6 +11,7 @@ import CheckoutScreen from "../screen/CheckoutScreen";
 import BillingScreen from "../screen/BillingScreen";
 import OrderScreen from "../screen/OrderScreen";
 import OrdersScreen from "../screen/OrdersScreen";
+
 
 
 let persistor = persistStore(store);
@@ -34,6 +34,7 @@ export default function UserStack() {
             <Stack.Screen name="Billing" component={BillingScreen} />
             <Stack.Screen name="Order" component={OrderScreen} />
             <Stack.Screen name="Orders" component={OrdersScreen} />
+           
           </Stack.Navigator>
         </PersistGate>
       </Provider>

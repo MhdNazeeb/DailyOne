@@ -9,6 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 
 
 const ProfileContent = ({userData}) => {
+  console.log(userData,'jjj')
   const navigation = useNavigation();
   return (
     <View>
