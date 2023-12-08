@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -6,11 +6,23 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { Auth } from "../config/authentication";
 
-
-const ProfileContent = ({userData}) => {
-  console.log(userData,'jjj')
+const ProfileContent = ({ userData }) => {
   const navigation = useNavigation();
+  // Function to log the user out
+  function logout() {
+    Auth.signOut()
+      .then(function () {
+        // Sign-out successful.
+        navigation.replace('Login')
+       })
+      .catch(function (error) {
+        // An error happened.
+        console.error("Error signing out:", error);
+      });
+  }
+
   return (
     <View>
       <View className="p-5">
@@ -19,8 +31,9 @@ const ProfileContent = ({userData}) => {
           <Text>{userData[0]?.email}</Text>
         </View>
       </View>
-      <Pressable className="flex-row justify-between pr-2 pt-11"
-      onPress={()=>navigation.navigate('Orders')}
+      <Pressable
+        className="flex-row justify-between pr-2 pt-11"
+        onPress={() => navigation.navigate("Orders")}
       >
         <View className="flex-row pl-4">
           <View>
@@ -76,19 +89,6 @@ const ProfileContent = ({userData}) => {
       <View className="flex-row justify-between pr-2 pt-11">
         <View className="flex-row pl-4">
           <View>
-            <AntDesign name="message1" size={20} color="black" />
-          </View>
-          <View className="flex-row pl-4">
-            <Text>Feedback</Text>
-          </View>
-        </View>
-        <View>
-          <MaterialIcons name="arrow-forward-ios" size={20} color="black" />
-        </View>
-      </View>
-      <View className="flex-row justify-between pr-2 pt-11">
-        <View className="flex-row pl-4">
-          <View>
             <AntDesign name="staro" size={20} color="black" />
           </View>
           <View className="flex-row pl-4">
@@ -99,6 +99,22 @@ const ProfileContent = ({userData}) => {
           <MaterialIcons name="arrow-forward-ios" size={20} color="black" />
         </View>
       </View>
+      <TouchableOpacity
+        className="flex-row justify-between pr-2 pt-11"
+        onPress={logout}
+      >
+        <View className="flex-row pl-4">
+          <View>
+            <AntDesign name="logout" size={20} color="black" />
+          </View>
+          <View className="flex-row pl-4">
+            <Text>Logout</Text>
+          </View>
+        </View>
+        <View>
+          <MaterialIcons name="arrow-forward-ios" size={20} color="black" />
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };

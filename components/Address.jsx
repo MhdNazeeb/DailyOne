@@ -29,7 +29,7 @@ import { useDispatch } from "react-redux";
 import { PickUpTimeDate } from "../Redux/PickUp";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from "@expo/vector-icons";
 
 const Address = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -77,6 +77,7 @@ const Address = () => {
         });
 
         setSuccess(true);
+        setReload(!reload);
         setTimeout(() => {
           setSuccess(false);
         }, 2000);
@@ -115,7 +116,12 @@ const Address = () => {
   })();
 
   function checkOut() {
-    if (selectDeliveryTime === "" || selectTime === "" || selectedDate === "") {
+    if (
+      selectDeliveryTime === "" ||
+      selectTime === "" ||
+      selectedDate === "" ||
+      exist === false
+    ) {
       setFormError(true);
       setTimeout(() => {
         setFormError(false);
@@ -123,13 +129,18 @@ const Address = () => {
       return;
     }
 
-      dispatch(PickUpTimeDate({selectDeliveryTime,selectTime,selectedDate}));
+    dispatch(PickUpTimeDate({ selectDeliveryTime, selectTime, selectedDate }));
     navigation.replace("Billing");
   }
   return (
     <SafeAreaView>
       <View className="font-bold p-3">
-      <MaterialIcons name="arrow-back-ios" size={26} color="black" onPress={()=>navigation.navigate("Cart")} />
+        <MaterialIcons
+          name="arrow-back-ios"
+          size={26}
+          color="black"
+          onPress={() => navigation.navigate("Cart")}
+        />
       </View>
       <View className="bg-white m-2 h-24 p-2 flex-row justify-between">
         {exist ? (
@@ -138,10 +149,10 @@ const Address = () => {
               <Text className="font-medium">Name:{getAddress?.name}</Text>
             </View>
             <View className="w-60">
-              <Text className="font-medium">Name:{getAddress?.address}</Text>
+              <Text className="font-medium">Address:{getAddress?.address}</Text>
             </View>
             <View className="w-60">
-              <Text className="font-medium">Name:{getAddress?.pincode}</Text>
+              <Text className="font-medium">Pincode:{getAddress?.pincode}</Text>
             </View>
           </View>
         ) : (

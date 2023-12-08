@@ -80,7 +80,7 @@ const SelectTime = ({setSelectDeliveryTime,selectDeliveryTime,setSelectedTime,se
           </Pressable>
         ))}
       </ScrollView>
-      <Text className="m-4 font-medium text-sm">Select Time</Text>
+      <Text className="m-4 font-medium text-sm">Select Delivery Time</Text>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         {deliveryTime?.map((val, i) => (
           <Pressable

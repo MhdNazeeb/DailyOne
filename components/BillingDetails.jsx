@@ -15,6 +15,7 @@ import { clearPickUp } from "../Redux/PickUp";
 import { Firestore, addDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../config/authentication";
 import useAuth from "../hooks/useAuth";
+import StripeCheckout from "./StripeCheckout";
 
 const BillingDetails = () => {
   const navigation = useNavigation();
@@ -52,7 +53,7 @@ const BillingDetails = () => {
     <View>
       <Text className="mx-4 font-medium">BillingDetails</Text>
 
-      <View className="bg-white h-3/5 w-11/12 mx-4  mt-6">
+      <View className="bg-white h-96 w-11/12 mx-4 mt-6">
         <View className="h-1/2 border-b">
           <View className="flex-row justify-between">
             <View>
@@ -116,7 +117,9 @@ const BillingDetails = () => {
             <Text className="mr-2 font-medium">${price}</Text>
           </View>
         </View>
-        <View className="h-40 flex items-center pt-5">
+        
+      </View>
+      <View className="h-80 flex items-center pt-5">
           <TouchableOpacity
             className="bg-sky-300 rounded-md h-9 w-3/4"
             onPress={() => CashOnDelivery()}
@@ -125,8 +128,8 @@ const BillingDetails = () => {
               Cash On Delivery
             </Text>
           </TouchableOpacity>
+          {/* <StripeCheckout /> */}
         </View>
-      </View>
     </View>
   );
 };
