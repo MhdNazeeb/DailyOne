@@ -48,17 +48,13 @@ const Services = () => {
   ];
 
   return (
-    <View className='p-2'>
+    <View className='p-2 lg:pl-16'>
       <Text className='text-black mb-3 text-lg font-medium'>Srvices Is Available</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} >
         {services?.map((item) => (
           <Pressable className='m-3 flex bg-white p-2 rounded-lg' key={item.id}>
             <Image
-              style={{
-                resizeMode: "cover",
-                height: 60,
-                width: 70,
-              }}
+            className='w-20 h-14 lg:w-36 lg:h-32'
               source={{ uri: item.image }}
             />
             <Text className='text-center mt-2'>{item.name}</Text>

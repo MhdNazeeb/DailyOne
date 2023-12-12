@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import BottomSheet from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ImageBackground } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -23,7 +23,6 @@ const Profile = () => {
   const bottomSheetRef = useRef(null);
   const { user } = useAuth();
   useEffect(() => {
-  
     (async function () {
       const myCollection = collection(db, "users");
       const querySnapshot = await getDocs(myCollection);
@@ -41,7 +40,6 @@ const Profile = () => {
 
   const handleOpenPress = () => {
     bottomSheetRef?.current?.expand();
-
   };
 
   // variables
@@ -82,21 +80,20 @@ const Profile = () => {
           </Pressable>
         </View>
 
-       
-          <BottomSheet
-            ref={bottomSheetRef}
-            snapPoints={snapPoints}
-            onChange={handleSheetChanges}
-            backgroundStyle={{ borderRadius: 38 }}
-          >
+        <BottomSheet
+          ref={bottomSheetRef}
+          snapPoints={snapPoints}
+          onChange={handleSheetChanges}
+          backgroundStyle={{ borderRadius: 38 }}
+        >
+          <BottomSheetScrollView>
             <View>
               <ProfileContent userData={userData} />
             </View>
-          </BottomSheet>
-       
+          </BottomSheetScrollView>
+        </BottomSheet>
       </View>
     </SafeAreaView>
   );
 };
-
 export default Profile;

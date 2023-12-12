@@ -106,7 +106,7 @@ const CartProduct = () => {
           </Text>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate("Pickup")}>
-          <Text className="text-white font-bold text-lg mt-2">
+          <Text className="text-white lg:text-end font-bold text-lg mt-2">
             Proceed to Checkout..
           </Text>
         </TouchableOpacity>

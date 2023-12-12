@@ -9,7 +9,10 @@
     },
     "android": {
       "package": "com.nasi777.DailyFresh",
-      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
     }
   }
 }

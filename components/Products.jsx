@@ -69,7 +69,7 @@ export default function Products({ loading, SetLoding, SetCart, cart }) {
   })();
   return (
     <SafeAreaView>
-    <View className="p-3 flex ">
+    <View className="p-3 flex  ">
       {!loading ? (
         <View className="flex-row max-w-max flex-wrap  gap-[2%]">
           {product?.map((item) => (

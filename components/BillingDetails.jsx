@@ -15,13 +15,17 @@ import { clearPickUp } from "../Redux/PickUp";
 import { Firestore, addDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../config/authentication";
 import useAuth from "../hooks/useAuth";
-import StripeCheckout from "./StripeCheckout";
+import PaymentSheetComponent from "./PaymentSheetComponent";
+
+
 
 const BillingDetails = () => {
   const navigation = useNavigation();
   const { user } = useAuth();
   const OrderDetails = useSelector((state) => state.datePickUp);
+  console.log(OrderDetails,'this order');
   const order = useSelector((state) => state.cart.cart);
+  console.log(order,'this order');
   const dispatch = useDispatch();
   const price = order.reduce((acc, curr) => {
     return (acc += +curr?.quantity * +curr?.price);
@@ -128,7 +132,7 @@ const BillingDetails = () => {
               Cash On Delivery
             </Text>
           </TouchableOpacity>
-          {/* <StripeCheckout /> */}
+          <PaymentSheetComponent />
         </View>
     </View>
   );
